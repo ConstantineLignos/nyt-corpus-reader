@@ -1,0 +1,2 @@
+pymongo
+attrs>=18.1.0
