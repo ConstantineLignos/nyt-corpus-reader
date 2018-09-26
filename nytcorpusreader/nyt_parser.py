@@ -1,7 +1,11 @@
+"""
+Parse New York Times Annotated Corpus files.
+"""
+
 import datetime
 # noinspection PyPep8Naming
 import xml.etree.ElementTree as ET
-from typing import Sequence, Iterable, Optional, Dict, Any, Union
+from typing import Sequence, Iterable, Optional, Dict, Any, Union, TextIO
 
 from attr import attrs, attrib, asdict
 
@@ -10,6 +14,14 @@ NO_INDEX_TERMS = 'NO INDEX TERMS FROM NYTIMES'
 
 @attrs
 class NYTArticle:
+    """
+    Parse and store the fields of an NYT Annotated Corpus article.
+
+    Note that due to issues with the original data, descriptors,
+    general descriptors, and types of material are lowercased. As
+    some types of material mistakenly contain article text, long
+    entries or entries containing tags in that field are removed.
+    """
 
     docid: str = attrib()
     title: Optional[str] = attrib()
@@ -48,7 +60,7 @@ class NYTArticle:
                    types_of_material, paragraphs)
 
     @classmethod
-    def from_file(cls, input_file: str) -> 'NYTArticle':
+    def from_file(cls, input_file: TextIO) -> 'NYTArticle':
         return cls.from_element_tree(ET.parse(input_file))
 
     @classmethod
